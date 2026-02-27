@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Activity</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f4f6f8;
+    }
+    .dashboard {
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 900px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    #logs {
+      margin-top: 20px;
+      height: 200px;
+      overflow-y: scroll;
+      border: 1px solid #ddd;
+      padding: 10px;
+      background: #fafafa;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <h1>Activity Dashboard</h1>
+
+    <!-- Real-time visualized section -->
+    <canvas id="realTimeChart" width="400" height="200"></canvas>
+
+    <!-- Tasks log section -->
+    <h3>Real-time Logs:</h3>
+    <div id="logs">Loading activity logs...</div>
+  </div>
+
+  <!-- Dashboard Logic -->
+  <script>
+    // Mock data for Chart.js
+    const ctx = document.getElementById('realTimeChart').getContext('2d');
+    const realTimeChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["Start"],
+        datasets: [{
+          label: 'Activity Monitoring',
+          data: [0],
+          borderColor: 'rgba(75, 192, 192, 1)',
+          tension: 0.4,
+        }],
+      },
+      options: {
+        animation: false,
+        responsive: true,
+        plugins: { legend: { display: true } }
+      }
+    });
+
+    // Simulated log updates
+    const logs = document.getElementById('logs');
+    setInterval(async () => {
+      // Mock replacing with realtime API Fetch
+      const logEntry = `${new Date().toISOString()} - Simulated task in progress...`;
+      logs.innerHTML += `<div>${logEntry}</div>`;
+      logs.scrollTop = logs.scrollHeight;
+
+      // Push mock data to chart
+      realTimeChart.data.labels.push(new Date().toLocaleTimeString());
+      realTimeChart.data.datasets[0].data.push(Math.random() * 50);
+      if (realTimeChart.data.labels.length > 10) realTimeChart.data.labels.shift();
+      if (realTimeChart.data.datasets[0].data.length > 10) realTimeChart.data.datasets[0].data.shift();
+      realTimeChart.update();
+    }, 2000);
+  </script>
+</body>
+</html>
